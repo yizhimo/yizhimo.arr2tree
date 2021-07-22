@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+
+  <script>
+    const arr = [
+      { id: 2, pid: 0, name: "222"},
+      { id: 3, pid: 2, name: "333"},
+      { id: 4, pid: 1, name: "411"},
+      { id: 5, pid: 4, name: "555"},
+      { id: 6, pid: 4, name: "644"},
+      { id: 7, pid: 2, name: "722"},
+      { id: 1, pid: 0, name: "111"},
+    ]
+
+    function arrToTree(arr) {
+      let newArr = []
+
+      let waitChildArr = []
+      arr.forEach(item => {
+        let isP = arr.every(i => {
+          return item.pid !== i.id
+        })
+        if(isP) {
+          const newObj = {}
+          newObj.id = item.id
+          newObj.pid = item.pid
+          newObj.name = item.name
+          newObj.child = []
+          newArr.push(newObj)
+        } else {
+          waitChildArr.push(item)
+        }
+      })
+
+      function ergodicFn(parentObj) {
+        waitChildArr.forEach(item => {
+          if(item.pid === parentObj.id) {
+            item.child = []
+            parentObj.child.push(item)
+            ergodicFn(item)
+          }
+        })
+      }
+      newArr.forEach(item => {
+        ergodicFn(item)
+      })
+
+      return newArr
+    }
+    console.log(arrToTree(arr))
+  </script>
+</body>
+</html>
